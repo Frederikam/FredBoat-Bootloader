@@ -10,11 +10,16 @@ public class Bootloader {
             Process process = boot();
             process.waitFor();
 
+            System.out.println("[BOOTLOADER] Bot exited with code " + process.exitValue());
+
             if (process.exitValue() == ExitCodes.EXIT_CODE_UPDATE) {
+                System.out.println("[BOOTLOADER] Now updating...");
                 update();
             } else if (process.exitValue() == ExitCodes.EXIT_CODE_RESTART) {
+                System.out.println("[BOOTLOADER] Now restarting..");
                 //Continue
             } else {
+                System.out.println("[BOOTLOADER] Now shutting down...");
                 break;
             }
         }
@@ -38,6 +43,7 @@ public class Bootloader {
 
         //Now clean up the workspace
         new File("./update").delete();
+        System.out.println("[BOOTLOADER] Updated");
     }
 
 }
