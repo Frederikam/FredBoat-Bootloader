@@ -1,5 +1,6 @@
 package com.frederikam.fredboat.bootloader;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Bootloader {
@@ -25,7 +26,14 @@ public class Bootloader {
     }
     
     public static void update(){
+        //The main program has already prepared the shaded jar. We just need to replace the jars.
+        File oldJar = new File("./FredBoat-1.0.jar");
+        oldJar.delete();
+        File newJar = new File("./update/target/FredBoat-1.0.jar");
+        newJar.renameTo(oldJar);
         
+        //Now clean up the workspace
+        new File("./update").delete();
     }
 
 }
