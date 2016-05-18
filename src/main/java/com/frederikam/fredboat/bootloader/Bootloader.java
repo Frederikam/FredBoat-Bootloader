@@ -9,9 +9,11 @@ public class Bootloader {
         while (true) {
             Process process = boot();
             process.waitFor();
-            
+
             if (process.exitValue() == ExitCodes.EXIT_CODE_UPDATE) {
                 update();
+            } else if (process.exitValue() == ExitCodes.EXIT_CODE_RESTART) {
+                //Continue
             } else {
                 break;
             }
@@ -24,14 +26,14 @@ public class Bootloader {
         Process process = pb.start();
         return process;
     }
-    
-    public static void update(){
+
+    public static void update() {
         //The main program has already prepared the shaded jar. We just need to replace the jars.
         File oldJar = new File("./FredBoat-1.0.jar");
         oldJar.delete();
         File newJar = new File("./update/target/FredBoat-1.0.jar");
         newJar.renameTo(oldJar);
-        
+
         //Now clean up the workspace
         new File("./update").delete();
     }
