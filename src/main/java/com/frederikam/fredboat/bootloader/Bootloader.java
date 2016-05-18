@@ -21,7 +21,9 @@ public class Bootloader {
     }
 
     public static Process boot() throws IOException {
-        ProcessBuilder pb = new ProcessBuilder("java -jar FredBoat-1.0.jar")
+        //ProcessBuilder pb = new ProcessBuilder(System.getProperty("java.home") + "/bin/java -jar "+new File("FredBoat-1.0.jar").getAbsolutePath())
+        ProcessBuilder pb = new ProcessBuilder()
+                .command("java", "-jar", "FredBoat-1.0.jar")
                 .inheritIO();
         Process process = pb.start();
         return process;
