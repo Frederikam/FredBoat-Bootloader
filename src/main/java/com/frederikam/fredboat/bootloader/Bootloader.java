@@ -15,12 +15,12 @@ public class Bootloader {
             if (process.exitValue() == ExitCodes.EXIT_CODE_UPDATE) {
                 System.out.println("[BOOTLOADER] Now updating...");
                 update();
-            } else if (process.exitValue() == ExitCodes.EXIT_CODE_RESTART) {
-                System.out.println("[BOOTLOADER] Now restarting..");
-                //Continue
-            } else {
+            } else if (process.exitValue() == 130 || process.exitValue() == ExitCodes.EXIT_CODE_NORMAL) {
                 System.out.println("[BOOTLOADER] Now shutting down...");
                 break;
+                //SIGINT received or clean exit
+            } else {
+                System.out.println("[BOOTLOADER] Now restarting..");
             }
         }
     }
@@ -28,7 +28,7 @@ public class Bootloader {
     public static Process boot() throws IOException {
         //ProcessBuilder pb = new ProcessBuilder(System.getProperty("java.home") + "/bin/java -jar "+new File("FredBoat-1.0.jar").getAbsolutePath())
         ProcessBuilder pb = new ProcessBuilder()
-                .command("java", "-jar", "FredBoat-1.0.jar")
+                .command("java", "-jar", "FredBoatMusic-1.0.jar")
                 .inheritIO();
         Process process = pb.start();
         return process;
@@ -36,9 +36,9 @@ public class Bootloader {
 
     public static void update() {
         //The main program has already prepared the shaded jar. We just need to replace the jars.
-        File oldJar = new File("./FredBoat-1.0.jar");
+        File oldJar = new File("./FredBoatMusic-1.0.jar");
         oldJar.delete();
-        File newJar = new File("./update/target/FredBoat-1.0.jar");
+        File newJar = new File("./update/target/FredBoatMusic-1.0.jar");
         newJar.renameTo(oldJar);
 
         //Now clean up the workspace
