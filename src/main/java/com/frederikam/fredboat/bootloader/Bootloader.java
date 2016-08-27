@@ -13,22 +13,21 @@ public class Bootloader {
 
     public static JSONArray command;
     public static String jarName;
-    
+
     public static void main(String[] args) throws IOException, InterruptedException {
-        InputStream is = new FileInputStream(new File("./bootloader.json"));
-        Scanner scanner = new Scanner(is);
-        JSONObject json = new JSONObject(scanner.useDelimiter("\\A").next());
-        scanner.close();
-        
-        command = json.getJSONArray("command");
-        jarName = json.getString("jarName");
-        
         OUTER:
         while (true) {
+            InputStream is = new FileInputStream(new File("./bootloader.json"));
+            Scanner scanner = new Scanner(is);
+            JSONObject json = new JSONObject(scanner.useDelimiter("\\A").next());
+            scanner.close();
+            command = json.getJSONArray("command");
+            jarName = json.getString("jarName");
+
             Process process = boot();
             process.waitFor();
             System.out.println("[BOOTLOADER] Bot exited with code " + process.exitValue());
-            
+
             switch (process.exitValue()) {
                 case ExitCodes.EXIT_CODE_UPDATE:
                     System.out.println("[BOOTLOADER] Now updating...");
@@ -38,7 +37,7 @@ public class Bootloader {
                 case ExitCodes.EXIT_CODE_NORMAL:
                     System.out.println("[BOOTLOADER] Now shutting down...");
                     break OUTER;
-                    //SIGINT received or clean exit
+                //SIGINT received or clean exit
                 default:
                     System.out.println("[BOOTLOADER] Now restarting..");
                     break;
@@ -54,9 +53,9 @@ public class Bootloader {
         command.forEach((Object str) -> {
             list.add((String) str);
         });
-        
+
         pb.command(list);
-        
+
         Process process = pb.start();
         return process;
     }
