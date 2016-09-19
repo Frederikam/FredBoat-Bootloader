@@ -60,3 +60,5 @@ target/
 .nb-gradle/
 /dependency-reduced-pom.xml
 /credentials.json
+/FredBoat-1.0.jar
+/FredBoat-Bootloader-1.0.jar
